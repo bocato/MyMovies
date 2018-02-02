@@ -25,6 +25,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -40,6 +44,7 @@ dependencies {
     compile 'org.glassfish:javax.annotation:10.0-b28'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
     compile 'br.com.zup:multi-state-layout:1.0.3'
+    implementation 'android.arch.lifecycle:extensions:1.1.0'
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'

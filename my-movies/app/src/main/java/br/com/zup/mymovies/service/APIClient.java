@@ -9,7 +9,6 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -22,7 +21,13 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
+import br.com.zup.mymovies.MyMoviesApplication;
+import br.com.zup.mymovies.R;
+import br.com.zup.mymovies.util.Utils;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -47,9 +52,11 @@ public class APIClient {
         mInstance = this;
         mClient = new OkHttpClient()
                 .newBuilder()
-                .connectTimeout(90, TimeUnit.SECONDS)
-                .readTimeout(90, TimeUnit.SECONDS)
-                .build();;
+                .addInterceptor(checkConnectionInterceptor)
+                .addInterceptor(addAPIKeyInterceptor)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         mRetrofit = new Retrofit
                 .Builder()
@@ -63,17 +70,35 @@ public class APIClient {
                 .build();
     }
 
+    private final Interceptor checkConnectionInterceptor = chain -> {
+        if (!Utils.isOnline()) {
+            throw new NoConnectionException();
+        }
+        return chain.proceed(chain.request());
+    };
+
+    private final Interceptor addAPIKeyInterceptor = chain -> {
+        Request original = chain.request();
+        HttpUrl originalHttpUrl = original.url();
+
+        HttpUrl url = originalHttpUrl.newBuilder()
+                .addQueryParameter("apikey", MyMoviesApplication.getInstance().getString(R.string.omdb_api_key))
+                .build();
+
+        Request.Builder requestBuilder = original.newBuilder().url(url);
+
+        Request request = requestBuilder.build();
+        return chain.proceed(request);
+    };
+
     private class NullOnEmptyConverterFactory extends Converter.Factory {
         @Nullable
         @Override
         public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
             final Converter<ResponseBody, ?> delegate = retrofit.nextResponseBodyConverter(this, type, annotations);
-            return new Converter<ResponseBody, Object>() {
-                @Override
-                public Object convert(ResponseBody body) throws IOException {
-                    if (body.contentLength() == 0) return null;
-                    return delegate.convert(body);
-                }
+            return (Converter<ResponseBody, Object>) body -> {
+                if (body.contentLength() == 0) return null;
+                return delegate.convert(body);
             };
         }
     }

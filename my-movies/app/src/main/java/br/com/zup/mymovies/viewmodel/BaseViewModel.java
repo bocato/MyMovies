@@ -1,4 +1,4 @@
-package br.com.zup.rwwhitelabel.viewmodel;
+package br.com.zup.mymovies.viewmodel;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -17,9 +17,7 @@ import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.EditText;
 
 import br.com.zup.multistatelayout.MultiStateLayout;
-import br.com.zup.rwwhitelabel.R;
-import br.com.zup.rwwhitelabel.util.theme.ThemeUtils;
-import br.com.zup.zupuikit.utils.MaskUtils;
+import br.com.zup.mymovies.R;
 
 /**
  * Created by rafaelneiva on 30/10/17.
@@ -162,25 +160,11 @@ BaseViewModel extends ViewModel implements LifecycleOwner {
         multiStateLayout.setState(state);
     }
 
-    @BindingAdapter("mask")
-    public static void setMask(EditText editText, String type) {
-        if (type.equalsIgnoreCase(editText.getResources().getString(R.string.mask_type_card))) {
-            editText.addTextChangedListener(MaskUtils.mask(editText, "#### #### #### ####"));
-        } else if (type.equalsIgnoreCase(editText.getResources().getString(R.string.mask_type_date))) {
-            editText.addTextChangedListener(MaskUtils.mask(editText, "##/##"));
-        }
-    }
-
     @BindingAdapter("focused")
     public static void setFocused(EditText editText, boolean hasFocus) {
         if (hasFocus) {
             editText.requestFocus();
         }
-    }
-
-    @BindingAdapter("swipeIndicatorColor")
-    public static void setSwipeColorScheme(SwipeRefreshLayout layout, int color) {
-        layout.setColorSchemeColors(ThemeUtils.resolveColor(layout.getContext(), color, Color.BLACK));
     }
 
     @NonNull

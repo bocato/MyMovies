@@ -1,21 +1,18 @@
 package br.com.zup.mymovies.view.activities;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import br.com.zup.mymovies.R;
 import br.com.zup.mymovies.databinding.ActSearchResultsBinding;
+import br.com.zup.mymovies.di.DaggerSearchComponent;
 import br.com.zup.mymovies.view.BaseActivity;
 
 /**
  * Created by rafaelneiva on 02/02/18.
  */
 
-public class SearchResultsActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity {
 
     ActSearchResultsBinding bind;
 
@@ -26,7 +23,9 @@ public class SearchResultsActivity extends BaseActivity {
 
     @Override
     protected void initInjectors() {
-
+        DaggerSearchComponent.builder()
+                .appComponent(getWLApplication().getAppComponent())
+                .build().inject(this);
     }
 
     @Override

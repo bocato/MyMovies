@@ -1,8 +1,11 @@
 package br.com.zup.mymovies;
 
 import android.app.Application;
-import android.databinding.Bindable;
+import android.support.v7.app.AppCompatDelegate;
 
+import br.com.zup.mymovies.di.app.AppComponent;
+import br.com.zup.mymovies.di.app.AppModule;
+import br.com.zup.mymovies.di.app.DaggerAppComponent;
 import br.com.zup.mymovies.service.APIClient;
 
 /**
@@ -10,18 +13,36 @@ import br.com.zup.mymovies.service.APIClient;
  */
 
 public class MyMoviesApplication extends Application {
+    private static MyMoviesApplication mInstance;
+
+    public synchronized static MyMoviesApplication getInstance() {
+        return mInstance;
+    }
 
     private APIClient mApiClient;
+    private AppComponent mAppComponent;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
 
-        mApiClient = new APIClient(this, "");
+        mApiClient = new APIClient(this, getString(R.string.service_base_url));
+
+        mAppComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
     }
 
-    @Bindable
     public APIClient getApiClient() {
         return mApiClient;
+    }
+
+    public AppComponent getAppComponent() {
+        return mAppComponent;
     }
 }

@@ -1,17 +1,20 @@
 package br.com.zup.mymovies.view.activities
 
-import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import br.com.zup.mymovies.R
+import br.com.zup.mymovies.view.BaseActivity
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailActivity : BaseActivity() {
+    override fun getContentLayoutId(): Int {
+        return R.layout.activity_movie_detail;
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_detail)
+    override fun initInjectors() {
+    }
+
+    override fun initBinding() {
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

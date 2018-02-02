@@ -1,4 +1,4 @@
-package br.com.zup.rwwhitelabel.util;
+package br.com.zup.mymovies.util;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -31,17 +31,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
-import br.com.zup.realwaveservice.RWGenericResponse;
-import br.com.zup.realwaveservice.catalog.RWValidity;
-import br.com.zup.realwaveservice.customer.PersonTypeEnum;
-import br.com.zup.rwwhitelabel.R;
-import br.com.zup.rwwhitelabel.WhiteLabelApplication;
-import br.com.zup.rwwhitelabel.model.customer.Avatar;
-
-import static br.com.zup.rwwhitelabel.model.customer.RegisterCustomerRequest.REF_ID_AVATAR;
+import br.com.zup.mymovies.MyMoviesApplication;
 
 /**
  * Created by rafaelneiva on 03/11/17.z
@@ -53,7 +45,8 @@ public class Utils {
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
 
-    public static boolean isOnline(Context context) {
+    public static boolean isOnline() {
+        Context context = MyMoviesApplication.getInstance();
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = null;
         if (cm != null) {
@@ -204,16 +197,8 @@ public class Utils {
         }
     }
 
-    public static void showErrorDialog(Context ctx, RWGenericResponse response) {
-        Utils.showSimpleDialog(ctx, ctx.getString(R.string.default_service_error_title), response != null && response.getMessage() != null ? response.getMessage() : ctx.getString(R.string.default_error_message));
-    }
-
     public static String getCountry() {
         return "Brasil"; // fixme
-    }
-
-    public static PersonTypeEnum getPersonType() {
-        return PersonTypeEnum.INDIVIDUAL; // fixme
     }
 
     public static boolean alreadyInList(List<?> list, Object o) {
@@ -222,20 +207,6 @@ public class Utils {
         }
 
         return false;
-    }
-
-    public static String formatPeriod(RWValidity validity) {
-        Resources rs = WhiteLabelApplication.getInstance().getResources();
-        switch (validity.getPeriod()) {
-            case DAY:
-                return validity.getDuration() == 1 ? rs.getString(R.string.validity_day_singular) : rs.getString(R.string.validity_day_plural);
-            case HOUR:
-                return validity.getDuration() == 1 ? rs.getString(R.string.validity_hour_singular) : rs.getString(R.string.validity_hour_plural);
-            case MONTH:
-                return validity.getDuration() == 1 ? rs.getString(R.string.validity_month_singular) : rs.getString(R.string.validity_month_plural);
-        }
-
-        return "";
     }
 
     /**
@@ -253,15 +224,6 @@ public class Utils {
         }
 
         return sb.toString();
-    }
-
-    /**
-     * @param month The month number starting count in 0
-     * @return The name of respective month number
-     */
-    public static String getMonthName(Context context, int month) {
-        String[] monthName = context.getResources().getStringArray(R.array.months);
-        return monthName[month];
     }
 
     /**
@@ -319,7 +281,7 @@ public class Utils {
     }
 
     public static boolean isPackageInstalled(String packageName) {
-        Context context = WhiteLabelApplication.getInstance();
+        Context context = MyMoviesApplication.getInstance();
         PackageManager pm = context.getPackageManager();
         try {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
@@ -341,7 +303,7 @@ public class Utils {
             ctx.startActivity(sendIntent);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-            Utils.showSimpleDialog(ctx, null, ctx.getString(R.string.error_no_package));
+            Utils.showSimpleDialog(ctx, null, "No package");
         }
     }
 
@@ -355,31 +317,6 @@ public class Utils {
         sendIntent.setType("message/rfc822");
         ctx.startActivity(sendIntent);
     }
-
-    /**
-     * @return return the resource id of the Avatar chosen by the customer
-     */
-    public static int getLoggedCustomerAvatar() {
-        Map<String, Object> cFields = SingletonCustomer.getInstance().getCustomer().getCustomFields();
-        if (cFields != null && cFields.containsKey(REF_ID_AVATAR)) {
-            try {
-                return Avatar.getAvatarByValue((String) cFields.get(REF_ID_AVATAR)).getResId();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return -1;
-            }
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * @return true if a user is logged with valid session, false otherwise
-     */
-    public static boolean isLoggedIn() {
-        return SingletonCustomer.getInstance().getCredentials() != null;
-    }
-
 
     public static final String getHours(final Date date, final String format) {
         SimpleDateFormat formatHourOut = new SimpleDateFormat(format, Locale.getDefault());

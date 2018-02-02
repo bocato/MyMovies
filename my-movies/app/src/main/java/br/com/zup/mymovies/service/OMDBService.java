@@ -5,4 +5,6 @@ package br.com.zup.mymovies.service;
  */
 
 public interface OMDBService {
+
+
 }

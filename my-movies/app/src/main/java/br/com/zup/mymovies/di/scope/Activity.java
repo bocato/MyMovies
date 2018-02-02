@@ -1,4 +1,4 @@
-package br.com.zup.rwwhitelabel.di;
+package br.com.zup.mymovies.di.scope;
 
 import java.lang.annotation.Retention;
 
