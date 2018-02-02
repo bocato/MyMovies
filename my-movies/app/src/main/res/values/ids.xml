@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="finalVisibility" type="id">finalVisibilityAnim</item>
+    <item name="tag_reflow_data" type="id">tag_reflow_data</item>
+</resources>
