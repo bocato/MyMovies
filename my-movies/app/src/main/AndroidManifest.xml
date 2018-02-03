@@ -3,6 +3,7 @@
     package="br.com.zup.mymovies">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MyMoviesApplication"
@@ -19,7 +20,7 @@
             android:theme="@style/AppTheme">
 
             <meta-data android:name="android.app.default_searchable"
-                android:value=".view.activities.SearchResultsActivity" />
+                android:value=".view.activities.SearchActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

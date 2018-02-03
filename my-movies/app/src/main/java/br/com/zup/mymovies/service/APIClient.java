@@ -29,6 +29,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -54,6 +55,7 @@ public class APIClient {
                 .newBuilder()
                 .addInterceptor(checkConnectionInterceptor)
                 .addInterceptor(addAPIKeyInterceptor)
+                .addInterceptor(getLoggingCapableHttpClient())
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
@@ -90,6 +92,13 @@ public class APIClient {
         Request request = requestBuilder.build();
         return chain.proceed(request);
     };
+
+    private HttpLoggingInterceptor getLoggingCapableHttpClient() {
+        HttpLoggingInterceptor mLogging = new HttpLoggingInterceptor();
+        mLogging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        return mLogging;
+    }
 
     private class NullOnEmptyConverterFactory extends Converter.Factory {
         @Nullable
