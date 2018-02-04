@@ -13,7 +13,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginBottom="@dimen/small_margin"
         android:foreground="?selectableItemBackgroundBorderless"
         android:orientation="vertical"
@@ -22,46 +22,67 @@
         <ImageView
             android:id="@+id/ivPoster"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/movie_card_height"
             android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/ivShadow"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/movie_card_height"
             android:alpha="1"
             android:scaleType="centerCrop"
             tools:background="#4d000000"
             tools:ignore="ContentDescription" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:padding="@dimen/default_margin">
+            android:layout_height="@dimen/movie_card_height"
+            android:layout_gravity="bottom">
 
-            <TextView
-                android:id="@+id/tvTitle"
-                style="@style/TextAppearance.AppCompat.SearchResult.Title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{result.title}"
-                android:textColor="@color/colorTextLight"
-                tools:text="Movie title" />
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:padding="@dimen/default_margin">
 
-            <TextView
-                android:id="@+id/tvYear"
-                style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvTitle"
+                    style="@style/TextAppearance.AppCompat.SearchResult.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{result.title}"
+                    android:textColor="@color/colorTextLight"
+                    tools:text="Movie title l;djsf lakshjdflksdh laksjdhf ksdakshdklfjshd akshjdfkajshdf akshd" />
+
+                <TextView
+                    android:id="@+id/tvYear"
+                    style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:text="@{result.year}"
+                    android:textColor="@color/colorTextLight"
+                    tools:text="2018" />
+
+            </LinearLayout>
+
+            <com.varunest.sparkbutton.SparkButton
+                android:id="@+id/spark_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_margin"
-                android:text="@{result.year}"
-                android:textColor="@color/colorTextLight"
-                tools:text="2018" />
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="-16dp"
+                android:layout_marginRight="-16dp"
+                app:sparkbutton_activeImage="@mipmap/ic_heart"
+                app:sparkbutton_iconSize="32dp"
+                app:sparkbutton_inActiveImage="@mipmap/ic_heart_gray"
+                app:sparkbutton_primaryColor="@color/colorRed"
+                app:sparkbutton_secondaryColor="@color/colorGray" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 

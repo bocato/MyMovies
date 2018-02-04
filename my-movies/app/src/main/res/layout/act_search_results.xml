@@ -25,10 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?colorPrimary"
+            android:elevation="@dimen/small_margin"
             android:theme="@style/AppTheme.AppBarOverlay"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name"
-            android:elevation="@dimen/small_margin"
             app:titleTextColor="@color/colorTextLight" />
 
         <br.com.zup.multistatelayout.MultiStateLayout
@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
+                android:layoutAnimation="@anim/layout_animation_slide_from_bottom"
                 android:padding="@dimen/default_margin"
                 tools:listitem="@layout/list_item_search_result" />
 
