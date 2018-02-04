@@ -25,16 +25,19 @@ public class SearchViewModel extends BaseViewModel {
     public MutableLiveData<SearchResult> searchMovie(String query) {
         MutableLiveData<SearchResult> data = new MutableLiveData<>();
 
+        showLoading.set(true);
         mService.searchMovie(query).enqueue(new Callback<SearchResult>() {
             @Override
             public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
+                showLoading.set(false);
                 if (response.isSuccessful())
                     data.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<SearchResult> call, Throwable t) {
-
+                showLoading.set(false);
+                data.setValue(null);
             }
         });
 

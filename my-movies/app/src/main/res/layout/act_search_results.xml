@@ -6,6 +6,9 @@
 
     <data>
 
+
+        <import type="br.com.zup.multistatelayout.MultiStateLayout" />
+
         <variable
             name="search"
             type="br.com.zup.mymovies.viewmodel.SearchViewModel" />
@@ -25,15 +28,26 @@
             android:theme="@style/AppTheme.AppBarOverlay"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name"
+            android:elevation="@dimen/small_margin"
             app:titleTextColor="@color/colorTextLight" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvSearchResults"
+        <br.com.zup.multistatelayout.MultiStateLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            tools:listitem="@layout/list_item_search_result"
-            android:padding="@dimen/default_margin" />
+            app:msl_emptyLayout="@layout/msl_empty_view"
+            app:msl_errorLayout="@layout/msl_error_view"
+            app:msl_loadingLayout="@layout/msl_loading_view"
+            app:msl_state="@{search.showLoading ? MultiStateLayout.State.LOADING : MultiStateLayout.State.CONTENT}">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvSearchResults"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="@dimen/default_margin"
+                tools:listitem="@layout/list_item_search_result" />
+
+        </br.com.zup.multistatelayout.MultiStateLayout>
 
     </LinearLayout>
 

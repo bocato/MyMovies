@@ -1,10 +1,8 @@
 package br.com.zup.mymovies.view.activities;
 
 import android.app.SearchManager;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -15,7 +13,6 @@ import javax.inject.Inject;
 import br.com.zup.mymovies.R;
 import br.com.zup.mymovies.databinding.ActSearchResultsBinding;
 import br.com.zup.mymovies.di.DaggerSearchComponent;
-import br.com.zup.mymovies.model.SearchResult;
 import br.com.zup.mymovies.view.BaseActivity;
 import br.com.zup.mymovies.view.adapters.SearchResultAdapter;
 import br.com.zup.mymovies.viewmodel.SearchViewModel;
@@ -49,6 +46,12 @@ public class SearchActivity extends BaseActivity {
         bind.setSearch(viewModel);
 
         setSupportActionBar(bind.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        bind.toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
         handleIntent(getIntent());
     }
@@ -63,13 +66,16 @@ public class SearchActivity extends BaseActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
 
-            if (getSupportActionBar() != null)
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(query + " results");
+            }
 
             viewModel.searchMovie(query).observe(this, searchResult -> {
-                if (searchResult != null) {
+                if (searchResult != null && searchResult.getResults() != null && searchResult.getResults().size() > 0) {
                     bind.rvSearchResults.setAdapter(new SearchResultAdapter(searchResult.getResults()));
                     bind.rvSearchResults.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
+                } else {
+                    // TODO: 04/02/18 empty list
                 }
             });
         }
