@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import br.com.zup.mymovies.R;
 import br.com.zup.mymovies.databinding.ActSearchResultsBinding;
 import br.com.zup.mymovies.di.DaggerSearchComponent;
+import br.com.zup.mymovies.model.SearchResult;
 import br.com.zup.mymovies.view.BaseActivity;
 import br.com.zup.mymovies.view.adapters.SearchResultAdapter;
 import br.com.zup.mymovies.viewmodel.SearchViewModel;
@@ -72,13 +73,22 @@ public class SearchActivity extends BaseActivity {
 
             viewModel.searchMovie(query).observe(this, searchResult -> {
                 if (searchResult != null && searchResult.getResults() != null && searchResult.getResults().size() > 0) {
-                    bind.rvSearchResults.setAdapter(new SearchResultAdapter(searchResult.getResults()));
-                    bind.rvSearchResults.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
+                    setupListAdapter(searchResult);
                 } else {
                     // TODO: 04/02/18 empty list
                 }
             });
         }
+    }
+
+    private void setupListAdapter(SearchResult searchResult) {
+        SearchResultAdapter adapter = new SearchResultAdapter(searchResult.getResults());
+        bind.rvSearchResults.setAdapter(adapter);
+        bind.rvSearchResults.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
+
+        adapter.setListener(omdbId -> {
+            //todo
+        });
     }
 
     @Override

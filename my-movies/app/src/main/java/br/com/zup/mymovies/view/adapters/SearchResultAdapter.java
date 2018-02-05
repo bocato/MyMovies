@@ -28,6 +28,7 @@ import br.com.zup.mymovies.model.OmdbVideoBasic;
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.ViewHolder> {
 
     private List<OmdbVideoBasic> mItems;
+    private SearchResultListener mListener;
 
     public SearchResultAdapter(List<OmdbVideoBasic> items) {
         this.mItems = items;
@@ -40,7 +41,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(SearchResultAdapter.ViewHolder holder, int position) {
-        holder.bindView(mItems.get(position));
+        holder.bindView(mItems.get(holder.getAdapterPosition()));
     }
 
     @Override
@@ -58,6 +59,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         void bindView(OmdbVideoBasic omdbVideoBasic) {
             bind.setResult(omdbVideoBasic);
+
+            bind.clickableView.setOnClickListener(view -> {
+                if (getListener() != null) getListener().onItemClick(omdbVideoBasic.getId());
+            });
 
             Target target = new Target() {
                 @Override
@@ -94,5 +99,17 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             bind.ivPoster.setTag(target);
 
         }
+    }
+
+    public SearchResultListener getListener() {
+        return mListener;
+    }
+
+    public void setListener(SearchResultListener mListener) {
+        this.mListener = mListener;
+    }
+
+    public interface SearchResultListener {
+        void onItemClick(String omdbId);
     }
 }
