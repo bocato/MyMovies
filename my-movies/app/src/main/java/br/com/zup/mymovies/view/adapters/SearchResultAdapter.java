@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.NonNull;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.zup.mymovies.MyMoviesApplication;
@@ -42,6 +44,19 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     @Override
     public void onBindViewHolder(SearchResultAdapter.ViewHolder holder, int position) {
         holder.bindView(mItems.get(holder.getAdapterPosition()));
+
+        holder.bind.clickableView.setOnClickListener(view -> {
+            if (getListener() != null) getListener().onItemClick(getMoviesId(), holder.getAdapterPosition(), holder.bind.ivPoster);
+        });
+    }
+
+    @NonNull
+    private ArrayList<String> getMoviesId() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (OmdbVideoBasic movie : mItems) {
+            ids.add(movie.getId());
+        }
+        return ids;
     }
 
     @Override
@@ -59,10 +74,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         void bindView(OmdbVideoBasic omdbVideoBasic) {
             bind.setResult(omdbVideoBasic);
-
-            bind.clickableView.setOnClickListener(view -> {
-                if (getListener() != null) getListener().onItemClick(omdbVideoBasic.getId());
-            });
 
             Target target = new Target() {
                 @Override
@@ -110,6 +121,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     }
 
     public interface SearchResultListener {
-        void onItemClick(String omdbId);
+        void onItemClick(ArrayList<String> omdbIds, int clickedPos, View sharedElement);
     }
 }

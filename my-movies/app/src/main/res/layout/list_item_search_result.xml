@@ -14,9 +14,10 @@
     <android.support.v7.widget.CardView
         android:id="@+id/clickableView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/movie_card_height"
         android:clickable="true"
         android:focusable="true"
+        android:transitionName="@string/trans_name_movie_banner"
         android:layout_marginBottom="@dimen/small_margin"
         android:foreground="?selectableItemBackgroundBorderless"
         android:orientation="vertical"
@@ -59,7 +60,7 @@
                     android:layout_marginBottom="@dimen/small_margin"
                     android:text="@{result.title}"
                     android:textColor="@color/colorTextLight"
-                    tools:text="Movie title l;djsf lakshjdflksdh laksjdhf ksdakshdklfjshd akshjdfkajshdf akshd" />
+                    tools:text="Movie title l;djsf lakshjdflksdh laksjdhf ksdakshdklfjshd akshjdfkajshdf" />
 
                 <TextView
                     android:id="@+id/tvYear"

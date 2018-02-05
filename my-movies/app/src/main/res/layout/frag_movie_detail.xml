@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="br.com.zup.mymovies.viewmodel.MovieDetailViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivPoster"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/movie_card_height"
+            android:scaleType="centerCrop"
+            android:transitionName="@string/trans_name_movie_banner"
+            android:src="@mipmap/img_place_holder"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</layout>

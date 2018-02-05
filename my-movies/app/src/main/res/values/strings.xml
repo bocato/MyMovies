@@ -95,4 +95,5 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search anything</string>
     <string name="omdb_api_key">d8aa9c93</string>
+    <string name="trans_name_movie_banner">trans_name_movie_banner</string>
 </resources>

@@ -28,9 +28,6 @@ public class OmdbVideoBasic extends BaseObservable {
     @SerializedName("Poster")
     private String poster;
 
-    @SerializedName("Plot")
-    private String shortPlot;
-
     @Bindable
     public String getTitle() {
         return title;
@@ -79,15 +76,5 @@ public class OmdbVideoBasic extends BaseObservable {
     public void setPoster(String poster) {
         this.poster = poster;
         notifyPropertyChanged(BR.poster);
-    }
-
-    @Bindable
-    public String getShortPlot() {
-        return shortPlot;
-    }
-
-    public void setShortPlot(String shortPlot) {
-        this.shortPlot = shortPlot;
-        notifyPropertyChanged(BR.shortPlot);
     }
 }

@@ -3,13 +3,16 @@ package br.com.zup.mymovies.view.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
+import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import javax.inject.Inject;
 
+import br.com.zup.multistatelayout.MultiStateLayout;
 import br.com.zup.mymovies.R;
 import br.com.zup.mymovies.databinding.ActSearchResultsBinding;
 import br.com.zup.mymovies.di.DaggerSearchComponent;
@@ -46,6 +49,9 @@ public class SearchActivity extends BaseActivity {
         bind = (ActSearchResultsBinding) getBinding();
         bind.setSearch(viewModel);
 
+        getWindow().setExitTransition(new Explode());
+        getWindow().setReenterTransition(new Explode());
+
         setSupportActionBar(bind.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,7 +81,7 @@ public class SearchActivity extends BaseActivity {
                 if (searchResult != null && searchResult.getResults() != null && searchResult.getResults().size() > 0) {
                     setupListAdapter(searchResult);
                 } else {
-                    // TODO: 04/02/18 empty list
+                    bind.msl.setState(MultiStateLayout.State.EMPTY);
                 }
             });
         }
@@ -86,8 +92,12 @@ public class SearchActivity extends BaseActivity {
         bind.rvSearchResults.setAdapter(adapter);
         bind.rvSearchResults.setLayoutManager(new LinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
 
-        adapter.setListener(omdbId -> {
-            //todo
+        adapter.setListener((omdbIds, clickedPos, sharedElement) -> {
+            Intent intent = new Intent(SearchActivity.this, MovieDetailActivity.class);
+            intent.putStringArrayListExtra(MovieDetailActivity.ID_LIST_KEY, omdbIds);
+            intent.putExtra(MovieDetailActivity.CLICKED_POSITION_KEY, clickedPos);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchActivity.this, sharedElement, getString(R.string.trans_name_movie_banner));
+            startActivity(intent, options.toBundle());
         });
     }
 
